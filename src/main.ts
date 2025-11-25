@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { IS_DEVELOPMENT, NODE_ENV, CORS_ORIGIN, PORT } from './config/env.loader';
+import { IS_DEVELOPMENT, NODE_ENV, CORS_ORIGIN, PORT, IS_PRODUCTION } from './config/env.loader';
 import { Logger } from 'nestjs-pino';
 import { Reflector } from '@nestjs/core';
 import { ClassSerializerInterceptor } from '@nestjs/common';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -18,6 +19,13 @@ async function bootstrap() {
   // Class serializer configuration
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
+
+  // Helmet configuration
+  app.use(
+    helmet({
+      ...(IS_PRODUCTION ? {} : { contentSecurityPolicy: false }),
+    }),
+  );
 
   // Swagger configuration
   const config = new DocumentBuilder()

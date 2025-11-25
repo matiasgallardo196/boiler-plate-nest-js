@@ -27,3 +27,7 @@ export const CORS_ORIGIN = process.env.CORS_ORIGIN;
 // Logger variables
 export const LOGGER_LEVEL = process.env.LOGGER_LEVEL;
 export const FULL_LOGS = process.env.FULL_LOGS === 'true';
+
+// Rate limit variables
+export const RATE_LIMIT_TTL = Number(process.env.RATE_LIMIT_TTL) || 60; // 60 seconds
+export const RATE_LIMIT_LIMIT = Number(process.env.RATE_LIMIT_LIMIT) || 100; // 100 requests

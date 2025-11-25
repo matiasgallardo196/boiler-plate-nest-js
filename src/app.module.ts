@@ -5,9 +5,19 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AppValidationPipe } from './common/pipes/app-validation.pipe';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
-
+import { ThrottlerModule } from '@nestjs/throttler';
+import { RATE_LIMIT_TTL, RATE_LIMIT_LIMIT } from './config/env.loader';
 @Module({
-  imports: [AppLoggerModule, HealthModule],
+  imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: RATE_LIMIT_TTL,
+        limit: RATE_LIMIT_LIMIT,
+      },
+    ]),
+    AppLoggerModule,
+    HealthModule,
+  ],
   controllers: [],
   providers: [
     {
