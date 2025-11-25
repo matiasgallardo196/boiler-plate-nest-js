@@ -3,11 +3,21 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { IS_DEVELOPMENT, NODE_ENV, CORS_ORIGIN, PORT } from './config/env.loader';
 import { Logger } from 'nestjs-pino';
+import { Reflector } from '@nestjs/core';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
+
+  // Logger configuration
+  const logger = app.get(Logger);
+  app.useLogger(logger);
+
+  // Class serializer configuration
+  const reflector = app.get(Reflector);
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 
   // Swagger configuration
   const config = new DocumentBuilder()
@@ -27,10 +37,6 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
-
-  // Logger configuration
-  const logger = app.get(Logger);
-  app.useLogger(logger);
 
   // Server configuration
   await app.listen(PORT);
