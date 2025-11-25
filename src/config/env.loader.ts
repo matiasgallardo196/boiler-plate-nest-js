@@ -13,7 +13,7 @@ export const IS_TEST = NODE_ENV === 'test';
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
 
 // Server variables
-export const PORT = process.env.PORT || 3000;
+export const PORT = Number(process.env.PORT) || 3000;
 
 // Database variables
 export const DATABASE_URL = process.env.DATABASE_URL;
@@ -23,3 +23,7 @@ export const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // CORS variables
 export const CORS_ORIGIN = process.env.CORS_ORIGIN;
+
+// Logger variables
+export const LOGGER_LEVEL = process.env.LOGGER_LEVEL;
+export const FULL_LOGS = process.env.FULL_LOGS === 'true';
