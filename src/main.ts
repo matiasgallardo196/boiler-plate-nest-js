@@ -1,9 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { PORT } from './config/env.loader';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { IS_DEVELOPMENT } from './config/env.loader';
-import { CORS_ORIGIN } from './config/env.loader';
+import { IS_DEVELOPMENT, NODE_ENV, CORS_ORIGIN, PORT } from './config/env.loader';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,6 +28,7 @@ async function bootstrap() {
   await app.listen(PORT);
   console.log(`Server is running on port ${PORT}`);
   console.log(`Docs are running on port ${PORT}/docs`);
+  console.log(`Environment: ${NODE_ENV}`);
 }
 
 bootstrap();
