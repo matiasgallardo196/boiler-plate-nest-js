@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { HealthModule } from './modules/health/health.module';
 import { AppLoggerModule } from './common/logger/logger.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AppValidationPipe } from './common/pipes/app-validation.pipe';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { RATE_LIMIT_TTL, RATE_LIMIT_LIMIT } from './config/env.loader';
 @Module({
   imports: [
@@ -31,6 +31,10 @@ import { RATE_LIMIT_TTL, RATE_LIMIT_LIMIT } from './config/env.loader';
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

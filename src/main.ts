@@ -49,7 +49,7 @@ async function bootstrap() {
   // Server configuration
   await app.listen(PORT);
   logger.log(`Server is running on port ${PORT}`);
-  logger.log(`Docs are running on port ${PORT}/docs`);
+  if (IS_DEVELOPMENT) logger.log(`Docs are running on port ${PORT}/docs`);
   logger.log(`Environment: ${NODE_ENV}`);
 }
 
